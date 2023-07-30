@@ -72,6 +72,36 @@ class AttributeFilter:
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__}, value={self.value})"
 
 
+class DateFilter(AttributeFilter):
+    
+    @classmethod
+    def get(cls, approach):
+        return approach.time.date();
+
+class DistanceFilter(AttributeFilter):
+    
+    @classmethod
+    def get(cls, approach):
+        return approach.distance;
+
+class VelocityFilter(AttributeFilter):
+    
+    @classmethod
+    def get(cls, approach):
+        return approach.velocity;
+class DiameterFilter(AttributeFilter):
+    
+    @classmethod
+    def get(cls, approach):
+        return approach.diameter;
+
+class HazardousFilter(AttributeFilter):
+    
+    @classmethod
+    def get(cls, approach):
+        return approach.hazardous;
+
+
 def create_filters(
         date=None, start_date=None, end_date=None,
         distance_min=None, distance_max=None,
@@ -109,6 +139,37 @@ def create_filters(
     :return: A collection of filters for use with `query`.
     """
     # TODO: Decide how you will represent your filters.
+    filters= ();
+    if date:
+        f = DateFilter(operator.eq, date);
+        filters+=(f,);
+    if start_date:
+        f = DateFilter(operator.ge, start_date);
+        filters+=(f,);
+    if end_date:
+        f = DateFilter(operator.le, end_date);
+        filters+=(f,);
+    if distance_min:
+        f = DistanceFilter(operator.ge, distance_min);
+        filters+=(f,);
+    if distance_max:
+        f = DistanceFilter(operator.le, distance_max);
+        filters+=(f,);
+    if velocity_min:
+        f = VelocityFilter(operator.ge, velocity_min);
+        filters+=(f,);
+    if velocity_max:
+        f = VelocityFilter(operator.le, velocity_max);
+        filters+=(f,);
+    if diameter_min:
+        f = DiameterFilter(operator.ge, diameter_min);
+        filters+=(f,);
+    if diameter_max:
+        f = DiameterFilter(operator.le, diameter_max);
+        filters+=(f,);
+    if hazardous:
+        f = HazardousFilter(operator.is_, hazardous);
+        filters+=(f,);
     return ()
 
 

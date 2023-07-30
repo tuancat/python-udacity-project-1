@@ -11,8 +11,7 @@ data on NEOs and close approaches extracted by `extract.load_neos` and
 
 You'll edit this file in Tasks 2 and 3.
 """
-
-
+from extract import load_approaches, load_neos
 class NEODatabase:
     """A database of near-Earth objects and their close approaches.
 
@@ -39,8 +38,8 @@ class NEODatabase:
         :param neos: A collection of `NearEarthObject`s.
         :param approaches: A collection of `CloseApproach`es.
         """
-        self._neos = neos
-        self._approaches = approaches
+        self._neos = neos;
+        self._approaches = approaches;
 
         # TODO: What additional auxiliary data structures will be useful?
 
@@ -104,3 +103,15 @@ class NEODatabase:
         # TODO: Generate `CloseApproach` objects that match all of the filters.
         for approach in self._approaches:
             yield approach
+
+
+def main():
+    neos = load_neos('data/neos.csv')
+    approaches = load_approaches('data/cad.json')
+    dao = NEODatabase(neos, approaches);
+    result = dao.get_neo_by_designation('1978 R1');
+    print(result)
+
+
+if __name__ == '__main__':
+    main()

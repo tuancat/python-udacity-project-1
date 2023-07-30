@@ -25,7 +25,6 @@ def load_neos(neo_csv_path):
        for row in csvreader:
             neo = NearEarthObject(row[3], row[4], row[15], row[7]);
             data.append(neo);
-            print(neo);
     return (data);
 
 
@@ -37,7 +36,6 @@ def load_approaches(cad_json_path):
         for row in contents['data']:
             element = CloseApproach(row[0], row[3], row[4], row[7]);
             data.append(element)
-            print(element);
     return data;
 
 
