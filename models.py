@@ -17,6 +17,7 @@ quirks of the data set, such as missing names and unknown diameters.
 
 You'll edit this file in Task 1.
 """
+import json
 from helpers import cd_to_datetime, datetime_to_str
 
 
@@ -45,17 +46,23 @@ class NearEarthObject:
         # handle any edge cases, such as a empty name being represented by `None`
         # and a missing diameter being represented by `float('nan')`.
         self.designation = pdes
-        self.name = name
+        if len(name) == 0:
+            self.name = None
+        else:
+            self.name = name
         try:
             if(len(diameter) == 0):
-                self.diameter = float(0.0)
+                self.diameter = float('nan')
             else:
                 self.diameter = float(diameter)
         except ValueError:
             self.diameter = float('nan')
         #    print 'Line {i} is corrupt!'.format(i = index)'
             
-        self.hazardous = True if pha == 'N' else False
+        if pha == 'Y':
+            self.hazardous = True;
+        else:
+            self.hazardous = False;
 
         # Create an empty initial collection of linked approaches.
         self.approaches = []
@@ -141,3 +148,8 @@ class CloseApproach:
         """Return `repr(self)`, a computer-readable string representation of this object."""
         return f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, " \
                f"velocity={self.velocity:.2f}, neo={self.neo!r})"
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, 
+            sort_keys=True, indent=4)
+    def default(self, o):
+            return o.__dict__

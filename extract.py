@@ -20,8 +20,9 @@ from models import NearEarthObject, CloseApproach
 
 def load_neos(neo_csv_path):
     data = [];
-    with open("data/neos.csv", 'r') as file:
+    with open(neo_csv_path, 'r') as file:
        csvreader = csv.reader(file)
+       next(csvreader)
        for row in csvreader:
             neo = NearEarthObject(row[3], row[4], row[15], row[7]);
             data.append(neo);
@@ -36,6 +37,7 @@ def load_approaches(cad_json_path):
         for row in contents['data']:
             element = CloseApproach(row[0], row[3], row[4], row[7]);
             data.append(element)
+    
     return data;
 
 

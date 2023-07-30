@@ -39,9 +39,11 @@ class TestQuery(unittest.TestCase):
     def test_query_all(self):
         expected = set(self.approaches)
         self.assertGreater(len(expected), 0)
-
+        print(len(expected));
         filters = create_filters()
         received = set(self.db.query(filters))
+        print(len(filters));
+        print(len(received));
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
     ###############################################
@@ -58,6 +60,7 @@ class TestQuery(unittest.TestCase):
         self.assertGreater(len(expected), 0)
 
         filters = create_filters(date=date)
+        # print(len(filters));
         received = set(self.db.query(filters))
         self.assertEqual(expected, received, msg="Computed results do not match expected results.")
 
@@ -95,6 +98,7 @@ class TestQuery(unittest.TestCase):
             approach for approach in self.approaches
             if start_date <= approach.time.date() <= end_date
         )
+        
         self.assertGreater(len(expected), 0)
 
         filters = create_filters(start_date=start_date, end_date=end_date)

@@ -12,6 +12,7 @@ data on NEOs and close approaches extracted by `extract.load_neos` and
 You'll edit this file in Tasks 2 and 3.
 """
 from extract import load_approaches, load_neos
+from filters import create_filters, AttributeFilter
 class NEODatabase:
     """A database of near-Earth objects and their close approaches.
 
@@ -40,11 +41,28 @@ class NEODatabase:
         """
         self._neos = neos;
         self._approaches = approaches;
-
+        
+        
         # TODO: What additional auxiliary data structures will be useful?
 
         # TODO: Link together the NEOs and their close approaches.
-
+        for e in self._approaches:
+            neo = next(
+                (obj for obj in self._neos if obj.designation == e._designation),
+                None
+            )
+            if neo != None:
+                e.neo = neo;
+        # for e in self._neos:
+        #     for e1 in self._approaches:
+        #         if e.designation == e1._designation:
+        #             e.approaches.append(e1);
+        
+        self.neosDictByDesignation = {};
+        self.neosDictByName = {}
+        for e in self._neos:
+            self.neosDictByDesignation[str(e.designation)] = e;
+            self.neosDictByName[str(e.name)] = e;
     def get_neo_by_designation(self, designation):
         """Find and return an NEO by its primary designation.
 
@@ -59,11 +77,8 @@ class NEODatabase:
         :return: The `NearEarthObject` with the desired primary designation, or `None`.
         """
         # TODO: Fetch an NEO by its primary designation.
-        result = next(
-            (obj for obj in self._neos if obj.designation == designation),
-            None
-        )
-        return result
+        
+        return self.neosDictByDesignation.get(designation);
 
     def get_neo_by_name(self, name):
         """Find and return an NEO by its name.
@@ -80,10 +95,7 @@ class NEODatabase:
         :return: The `NearEarthObject` with the desired name, or `None`.
         """
         # TODO: Fetch an NEO by its name.
-        result = next(
-            (obj for obj in self._neos if obj.name == name),
-            None
-        )
+        self.neosDictByName.get(name);
         return result
 
     def query(self, filters=()):
@@ -101,16 +113,21 @@ class NEODatabase:
         :return: A stream of matching `CloseApproach` objects.
         """
         # TODO: Generate `CloseApproach` objects that match all of the filters.
-        for approach in self._approaches:
-            yield approach
-
+        if(len(filters) == 0):
+            return self._approaches;
+        result = filter(lambda approach: all(f(approach) for f in filters), self._approaches)
+        # for e in result:
+        #     print(e.neo.hazardous)
+        return result;
 
 def main():
     neos = load_neos('data/neos.csv')
     approaches = load_approaches('data/cad.json')
     dao = NEODatabase(neos, approaches);
-    result = dao.get_neo_by_designation('1978 R1');
+    result = dao.query();
+    print(len(dao._approaches))
     print(result)
+    # dao.query();
 
 
 if __name__ == '__main__':
