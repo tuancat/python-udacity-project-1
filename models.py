@@ -72,6 +72,15 @@ class NearEarthObject:
         """Return a representation of the full name of this NEO."""
         # TODO: Use self.designation and self.name to build a fullname for this object.
         return self.designation;
+    
+    def serialize(self):
+        json = {
+                "designation": self.designation, 
+                "name": self.name, 
+                "diameter": self.diameter, 
+                "hazardous": self.hazardous, 
+            };
+        return json;
 
     def __str__(self):
         isNot = ''
@@ -148,8 +157,20 @@ class CloseApproach:
         """Return `repr(self)`, a computer-readable string representation of this object."""
         return f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, " \
                f"velocity={self.velocity:.2f}, neo={self.neo!r})"
-    def toJSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__, 
-            sort_keys=True, indent=4)
+    def serialize(self):
+        json = {
+                'datetime_utc': self.time_str, 
+                'distance_au': self.distance, 
+                'velocity_km_s': self.velocity, 
+                # "neo": self.neo.toJSON
+            };
+        
+        return json;
+    @property
+    def datetime_utc(self):
+        return self.time_str
+    def to_json(self):
+        json = {};
+        return json.dumps(dict(json), indent=4, sort_keys=True, default=str)
     def default(self, o):
             return o.__dict__

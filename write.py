@@ -12,7 +12,51 @@ You'll edit this file in Part 4.
 """
 import csv
 import json
+from json import JSONEncoder
+from datetime import datetime
+from helpers import datetime_to_str
 
+class DataEncoder(JSONEncoder):
+    def default(self, o):
+        if isinstance(o, datetime):
+            return datetime_to_str(o)
+        else:
+            return super().default(o)
+class NearEarthObjectJSON:
+    def __init__(self, neo):
+        """Create a new `CloseApproach`.
+
+        :param info: A dictionary of excess keyword arguments supplied to the constructor.
+        """
+        # TODO: Assign information from the arguments passed to the constructor
+        # onto attributes named `_designation`, `time`, `distance`, and `velocity`.
+        # You should coerce these values to their appropriate data type and handle any edge cases.
+        # The `cd_to_datetime` function will be useful.
+        self.designation = neo.designation
+        self.name = neo.name
+        self.diameter_km = neo.diameter
+        self.potentially_hazardous = neo.hazardous
+        # self.neo = approach.neo
+    def default(self, o):
+            return o.__dict__
+    
+class CloseApproachJSON:
+    def __init__(self, approach, neoJson):
+        """Create a new `CloseApproach`.
+
+        :param info: A dictionary of excess keyword arguments supplied to the constructor.
+        """
+        # TODO: Assign information from the arguments passed to the constructor
+        # onto attributes named `_designation`, `time`, `distance`, and `velocity`.
+        # You should coerce these values to their appropriate data type and handle any edge cases.
+        # The `cd_to_datetime` function will be useful.
+        self.datetime_utc = approach.time_str
+        self.distance_au = approach.distance
+        self.velocity_km_s = approach.velocity
+        self.neo = neoJson.__dict__
+    def default(self, o):
+            return o.__dict__
+    
 
 def write_to_csv(results, filename):
     """Write an iterable of `CloseApproach` objects to a CSV file.
@@ -33,7 +77,15 @@ def write_to_csv(results, filename):
         writer = csv.DictWriter(outfile, fieldnames)
         writer.writeheader()
         for elem in results:
-            writer.writerow(elem)
+            row = {
+                'datetime_utc':elem.time_str, 
+                'distance_au': elem.distance, 
+                'velocity_km_s': elem.velocity, 
+                'designation': elem._designation,
+                'name': elem.neo.name,
+                'diameter_km': elem.neo.diameter, 
+                'potentially_hazardous': elem.neo.hazardous}
+            writer.writerow(row)
         
 def dumper(obj):
     try:
@@ -54,8 +106,16 @@ def write_to_json(results, filename):
     """
     # TODO: Write the results to a JSON file, following the specification in the instructions.
         # Write available listings to an output file.
+    result = []
     with open(filename, 'w') as outfile:
         for e in results:
+            neoJson = NearEarthObjectJSON(e.neo);
+            json_object = CloseApproachJSON(e, neoJson)
+            
+            # print()
+            result.append(json.dumps(json_object.__dict__, default=str, indent=2))
+            # print(json.dumps(dict(e.toJSON)))
             # print(json.dumps(e, default=dumper, indent=2))
-
-            json.dump(json.dumps(e, default=dumper, indent=2), outfile, indent=2)
+            # print(result)
+    print(result)
+    json.dump(result, outfile, indent=2)

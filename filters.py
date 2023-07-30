@@ -18,6 +18,7 @@ You'll edit this file in Tasks 3a and 3c.
 """
 import operator
 
+from itertools import islice
 
 class UnsupportedCriterionError(NotImplementedError):
     """A filter criterion is unsupported."""
@@ -176,12 +177,17 @@ def create_filters(
 
 def limit(iterator, n=None):
     """Produce a limited stream of values from an iterator.
-
+    
     If `n` is 0 or None, don't limit the iterator at all.
-
+    
     :param iterator: An iterator of values.
     :param n: The maximum number of values to produce.
     :yield: The first (at most) `n` values from the iterator.
     """
     # TODO: Produce at most `n` values from the given iterator.
-    return iterator
+    if n == 0:
+        return iterator
+    if n is None:
+        return iterator
+    print(islice(iterator, 0, n));
+    return islice(iterator, 0, n);
