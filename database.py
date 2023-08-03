@@ -53,10 +53,10 @@ class NEODatabase:
             )
             if neo != None:
                 e.neo = neo;
-        # for e in self._neos:
-        #     for e1 in self._approaches:
-        #         if e.designation == e1._designation:
-        #             e.approaches.append(e1);
+        for e in self._neos:
+            for e1 in self._approaches:
+                if e.designation == e1._designation:
+                    e.approaches.append(e1);
         
         self.neosDictByDesignation = {};
         self.neosDictByName = {}
@@ -95,8 +95,7 @@ class NEODatabase:
         :return: The `NearEarthObject` with the desired name, or `None`.
         """
         # TODO: Fetch an NEO by its name.
-        self.neosDictByName.get(name);
-        return result
+        return self.neosDictByName.get(name);
 
     def query(self, filters=()):
         """Query close approaches to generate those that match a collection of filters.
