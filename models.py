@@ -155,6 +155,11 @@ class CloseApproach:
         )
 
     def serialize(self):
+        """_summary_
+
+        Returns:
+            _type_: _description_
+        """        
         json = {
             "datetime_utc": self.time_str,
             "distance_au": self.distance,
@@ -166,9 +171,20 @@ class CloseApproach:
 
     @property
     def datetime_utc(self):
+        """_summary_
+
+        Returns:
+            _type_: _description_
+        """        
         return self.time_str
 
-        return json.dumps(dict(json), indent=4, sort_keys=True, default=str)
-
     def default(self, o):
+        """_summary_
+
+        Args:
+            o (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """        
         return o.__dict__
