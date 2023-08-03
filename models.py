@@ -33,14 +33,12 @@ class NearEarthObject:
     initialized to an empty collection, but eventually populated in the
     `NEODatabase` constructor.
     """
-    # TODO: How can you, and should you, change the arguments to this constructor?
-    # If you make changes, be sure to update the comments in this file.
+
     def __init__(self, pdes, name, diameter, pha):
         """Create a new `NearEarthObject`.
 
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
         """
-        # TODO: Assign information from the arguments passed to the constructor
         # onto attributes named `designation`, `name`, `diameter`, and `hazardous`.
         # You should coerce these values to their appropriate data type and
         # handle any edge cases, such as a empty name being represented by `None`
@@ -51,18 +49,18 @@ class NearEarthObject:
         else:
             self.name = name
         try:
-            if(len(diameter) == 0):
-                self.diameter = float('nan')
+            if len(diameter) == 0:
+                self.diameter = float("nan")
             else:
                 self.diameter = float(diameter)
         except ValueError:
-            self.diameter = float('nan')
+            self.diameter = float("nan")
         #    print 'Line {i} is corrupt!'.format(i = index)'
-            
-        if pha == 'Y':
-            self.hazardous = True;
+
+        if pha == "Y":
+            self.hazardous = True
         else:
-            self.hazardous = False;
+            self.hazardous = False
 
         # Create an empty initial collection of linked approaches.
         self.approaches = []
@@ -70,30 +68,31 @@ class NearEarthObject:
     @property
     def fullname(self):
         """Return a representation of the full name of this NEO."""
-        # TODO: Use self.designation and self.name to build a fullname for this object.
-        return self.designation;
-    
+        return self.designation
+
     def serialize(self):
         json = {
-                "designation": self.designation, 
-                "name": self.name, 
-                "diameter": self.diameter, 
-                "hazardous": self.hazardous, 
-            };
-        return json;
+            "designation": self.designation,
+            "name": self.name,
+            "diameter": self.diameter,
+            "hazardous": self.hazardous,
+        }
+        return json
 
     def __str__(self):
-        isNot = ''
+        isNot = ""
         if self.hazardous:
-            isNot = 'is';
+            isNot = "is"
         else:
-            isNot = ' is not'
+            isNot = " is not"
         return f"NEO {self.designation} has a diameter of {self.diameter:.3f} km and {isNot} potentially hazardous."
 
     def __repr__(self):
         """Return `repr(self)`, a computer-readable string representation of this object."""
-        return f"NearEarthObject(designation={self.designation!r}, name={self.name!r}, " \
-               f"diameter={self.diameter:.3f}, hazardous={self.hazardous!r})"
+        return (
+            f"NearEarthObject(designation={self.designation!r}, name={self.name!r}, "
+            f"diameter={self.diameter:.3f}, hazardous={self.hazardous!r})"
+        )
 
 
 class CloseApproach:
@@ -109,14 +108,13 @@ class CloseApproach:
     private attribute, but the referenced NEO is eventually replaced in the
     `NEODatabase` constructor.
     """
-    # TODO: How can you, and should you, change the arguments to this constructor?
+
     # If you make changes, be sure to update the comments in this file.
     def __init__(self, des, cd, dist, v_rel):
         """Create a new `CloseApproach`.
 
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
         """
-        # TODO: Assign information from the arguments passed to the constructor
         # onto attributes named `_designation`, `time`, `distance`, and `velocity`.
         # You should coerce these values to their appropriate data type and handle any edge cases.
         # The `cd_to_datetime` function will be useful.
@@ -141,36 +139,36 @@ class CloseApproach:
         formatted string that can be used in human-readable representations and
         in serialization to CSV and JSON files.
         """
-        # TODO: Use this object's `.time` attribute and the `datetime_to_str` function to
-        # build a formatted representation of the approach time.
-        # TODO: Use self.designation and self.name to build a fullname for this object.
         return datetime_to_str(self.time)
 
     def __str__(self):
         """Return `str(self)`."""
-        # TODO: Use this object's attributes to return a human-readable string representation.
         # The project instructions include one possibility. Peek at the __repr__
         # method for examples of advanced string formatting.
         return f"At {self.time_str}, {self._designation}  approaches Earth at a distance of {self.distance:.2f} au and a velocity of {self.velocity:.2f} km/s."
 
     def __repr__(self):
         """Return `repr(self)`, a computer-readable string representation of this object."""
-        return f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, " \
-               f"velocity={self.velocity:.2f}, neo={self.neo!r})"
+        return (
+            f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, "
+            f"velocity={self.velocity:.2f}, neo={self.neo!r})"
+        )
+
     def serialize(self):
         json = {
-                'datetime_utc': self.time_str, 
-                'distance_au': self.distance, 
-                'velocity_km_s': self.velocity, 
-                # "neo": self.neo.toJSON
-            };
-        
-        return json;
+            "datetime_utc": self.time_str,
+            "distance_au": self.distance,
+            "velocity_km_s": self.velocity,
+            # "neo": self.neo.toJSON
+        }
+
+        return json
+
     @property
     def datetime_utc(self):
         return self.time_str
-    def to_json(self):
-        json = {};
+
         return json.dumps(dict(json), indent=4, sort_keys=True, default=str)
+
     def default(self, o):
-            return o.__dict__
+        return o.__dict__
