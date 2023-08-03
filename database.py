@@ -16,6 +16,11 @@ from filters import create_filters, AttributeFilter
 
 
 class NEODatabase:
+    """_summary_
+
+    Returns:
+        _type_: _description_
+    """    
     """A database of near-Earth objects and their close approaches.
 
     A `NEODatabase` contains a collection of NEOs and a collection of close
@@ -26,6 +31,12 @@ class NEODatabase:
     """_summary_
     """
     def __init__(self, neos, approaches):
+        """_summary_
+
+        Args:
+            neos (_type_): _description_
+            approaches (_type_): _description_
+        """        
         """Create a new `NEODatabase`.
 
         As a precondition,this constructor assumes the collections of NEOs
@@ -124,6 +135,8 @@ class NEODatabase:
 
 
 def main():
+    """_summary_
+    """    
     neos = load_neos("data/neos.csv")
     approaches = load_approaches("data/cad.json")
     dao = NEODatabase(neos, approaches)
