@@ -106,16 +106,16 @@ def write_to_json(results, filename):
     """
     # TODO: Write the results to a JSON file, following the specification in the instructions.
         # Write available listings to an output file.
-    result = []
+    first_item = True
     with open(filename, 'w') as outfile:
+        outfile.write('[')
         for e in results:
             neoJson = NearEarthObjectJSON(e.neo);
             json_object = CloseApproachJSON(e, neoJson)
-            
-            # print()
-            result.append(json.dumps(json_object.__dict__, default=str, indent=2))
-            # print(json.dumps(dict(e.toJSON)))
-            # print(json.dumps(e, default=dumper, indent=2))
-            # print(result)
-    print(result)
-    json.dump(result, outfile, indent=2)
+            jsonString = json.dumps(json_object.__dict__, default=str, indent=4)
+            if first_item:
+               outfile.write(json.dumps(json_object.__dict__, default=str, indent=4))
+               first_item = False
+            else:
+               outfile.write("," + json.dumps(json_object.__dict__, default=str, indent=4))
+        outfile.write("]")
