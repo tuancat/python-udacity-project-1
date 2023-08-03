@@ -31,8 +31,8 @@ from write import write_to_csv, write_to_json
 
 
 TESTS_ROOT = (pathlib.Path(__file__).parent).resolve()
-TEST_NEO_FILE = TESTS_ROOT / 'test-neos-2020.csv'
-TEST_CAD_FILE = TESTS_ROOT / 'test-cad-2020.json'
+TEST_NEO_FILE = TESTS_ROOT / "test-neos-2020.csv"
+TEST_CAD_FILE = TESTS_ROOT / "test-cad-2020.json"
 
 
 def build_results(n):
@@ -46,7 +46,7 @@ def build_results(n):
 
 
 @contextlib.contextmanager
-def UncloseableStringIO(value=''):
+def UncloseableStringIO(value=""):
     """A context manager for an uncloseable `io.StringIO`.
 
     This produces an almost-normal `io.StringIO`, except the `close` method has
@@ -61,13 +61,13 @@ def UncloseableStringIO(value=''):
     buf.close = lambda: False
     yield buf
     buf.close = buf._close
-    delattr(buf, '_close')
+    delattr(buf, "_close")
     buf.close()
 
 
 class TestWriteToCSV(unittest.TestCase):
     @classmethod
-    @unittest.mock.patch('write.open')
+    @unittest.mock.patch("write.open")
     def setUpClass(cls, mock_file):
         results = build_results(5)
 
@@ -76,9 +76,13 @@ class TestWriteToCSV(unittest.TestCase):
             try:
                 write_to_csv(results, None)
             except csv.Error as err:
-                raise cls.failureException("Unable to write results to CSV.") from err
+                raise cls.failureException(
+                    "Unable to write results to CSV."
+                ) from err
             except ValueError as err:
-                raise cls.failureException("Unexpected failure while writing to CSV.") from err
+                raise cls.failureException(
+                    "Unexpected failure while writing to CSV."
+                ) from err
             else:
                 # Rewind the unclosed buffer to save its contents.
                 buf.seek(0)
@@ -93,15 +97,18 @@ class TestWriteToCSV(unittest.TestCase):
             # Consume the output and immediately discard it.
             collections.deque(csv.DictReader(buf), maxlen=0)
         except csv.Error as err:
-            raise self.failureException("write_to_csv produced an invalid CSV format.") from err
+            raise self.failureException(
+                "write_to_csv produced an invalid CSV format."
+            ) from err
 
     def test_csv_data_has_header(self):
         try:
             self.assertTrue(csv.Sniffer().has_header(self.value))
             return
         except csv.Error as err:
-            raise self.failureException("Unable to sniff for headers.") from err
-
+            raise self.failureException(
+                "Unable to sniff for headers."
+            ) from err
 
     def test_csv_data_has_five_rows(self):
         # Now, we have the value in memory, and can _actually_ start testing.
@@ -112,7 +119,9 @@ class TestWriteToCSV(unittest.TestCase):
             reader = csv.DictReader(buf)
             rows = tuple(reader)
         except csv.Error as err:
-            raise self.failureException("write_to_csv produced an invalid CSV format.") from err
+            raise self.failureException(
+                "write_to_csv produced an invalid CSV format."
+            ) from err
 
         self.assertEqual(len(rows), 5)
 
@@ -125,16 +134,26 @@ class TestWriteToCSV(unittest.TestCase):
             reader = csv.DictReader(buf)
             rows = tuple(reader)
         except csv.Error as err:
-            raise self.failureException("write_to_csv produced an invalid CSV format.") from err
+            raise self.failureException(
+                "write_to_csv produced an invalid CSV format."
+            ) from err
 
-        fieldnames = ('datetime_utc', 'distance_au', 'velocity_km_s', 'designation', 'name', 'diameter_km', 'potentially_hazardous')
+        fieldnames = (
+            "datetime_utc",
+            "distance_au",
+            "velocity_km_s",
+            "designation",
+            "name",
+            "diameter_km",
+            "potentially_hazardous",
+        )
         self.assertGreater(len(rows), 0)
         self.assertSetEqual(set(fieldnames), set(rows[0].keys()))
 
 
 class TestWriteToJSON(unittest.TestCase):
     @classmethod
-    @unittest.mock.patch('write.open')
+    @unittest.mock.patch("write.open")
     def setUpClass(cls, mock_file):
         results = build_results(5)
 
@@ -143,9 +162,13 @@ class TestWriteToJSON(unittest.TestCase):
             try:
                 write_to_json(results, None)
             except csv.Error as err:
-                raise cls.failureException("Unable to write results to CSV.") from err
+                raise cls.failureException(
+                    "Unable to write results to CSV."
+                ) from err
             except ValueError as err:
-                raise cls.failureException("Unexpected failure while writing to CSV.") from err
+                raise cls.failureException(
+                    "Unexpected failure while writing to CSV."
+                ) from err
             else:
                 # Rewind the unclosed buffer to fetch the contents saved to "disk".
                 buf.seek(0)
@@ -157,14 +180,18 @@ class TestWriteToJSON(unittest.TestCase):
         try:
             json.load(buf)
         except json.JSONDecodeError as err:
-            raise self.failureException("write_to_json produced an invalid JSON document") from err
+            raise self.failureException(
+                "write_to_json produced an invalid JSON document"
+            ) from err
 
     def test_json_data_is_a_sequence(self):
         buf = io.StringIO(self.value)
         try:
             data = json.load(buf)
         except json.JSONDecodeError as err:
-            raise self.failureException("write_to_json produced an invalid JSON document") from err
+            raise self.failureException(
+                "write_to_json produced an invalid JSON document"
+            ) from err
         self.assertIsInstance(data, collections.abc.Sequence)
 
     def test_json_data_has_five_elements(self):
@@ -172,7 +199,9 @@ class TestWriteToJSON(unittest.TestCase):
         try:
             data = json.load(buf)
         except json.JSONDecodeError as err:
-            raise self.failureException("write_to_json produced an invalid JSON document") from err
+            raise self.failureException(
+                "write_to_json produced an invalid JSON document"
+            ) from err
         self.assertEqual(len(data), 5)
 
     def test_json_element_is_associative(self):
@@ -180,7 +209,9 @@ class TestWriteToJSON(unittest.TestCase):
         try:
             data = json.load(buf)
         except json.JSONDecodeError as err:
-            raise self.failureException("write_to_json produced an invalid JSON document") from err
+            raise self.failureException(
+                "write_to_json produced an invalid JSON document"
+            ) from err
 
         approach = data[0]
         self.assertIsInstance(approach, collections.abc.Mapping)
@@ -190,41 +221,45 @@ class TestWriteToJSON(unittest.TestCase):
         try:
             data = json.load(buf)
         except json.JSONDecodeError as err:
-            raise self.failureException("write_to_json produced an invalid JSON document") from err
+            raise self.failureException(
+                "write_to_json produced an invalid JSON document"
+            ) from err
 
         approach = data[0]
-        self.assertIn('datetime_utc', approach)
-        self.assertIn('distance_au', approach)
-        self.assertIn('velocity_km_s', approach)
-        self.assertIn('neo', approach)
-        neo = approach['neo']
-        self.assertIn('designation', neo)
-        self.assertIn('name', neo)
-        self.assertIn('diameter_km', neo)
-        self.assertIn('potentially_hazardous', neo)
+        self.assertIn("datetime_utc", approach)
+        self.assertIn("distance_au", approach)
+        self.assertIn("velocity_km_s", approach)
+        self.assertIn("neo", approach)
+        neo = approach["neo"]
+        self.assertIn("designation", neo)
+        self.assertIn("name", neo)
+        self.assertIn("diameter_km", neo)
+        self.assertIn("potentially_hazardous", neo)
 
     def test_json_element_decodes_to_correct_types(self):
         buf = io.StringIO(self.value)
         try:
             data = json.load(buf)
         except json.JSONDecodeError as err:
-            raise self.failureException("write_to_json produced an invalid JSON document") from err
+            raise self.failureException(
+                "write_to_json produced an invalid JSON document"
+            ) from err
 
         approach = data[0]
         # try:
         #     datetime.datetime.strptime(approach['datetime_utc'], '%Y-%m-%d %H:%M')
         # except ValueError:
         #     self.fail("The `datetime_utc` key isn't in YYYY-MM-DD HH:MM` format.")
-        self.assertIsInstance(approach['distance_au'], float)
-        self.assertIsInstance(approach['velocity_km_s'], float)
+        self.assertIsInstance(approach["distance_au"], float)
+        self.assertIsInstance(approach["velocity_km_s"], float)
 
-        self.assertIsInstance(approach['neo']['designation'], str)
-        self.assertNotEqual(approach['neo']['name'], 'None')
-        if approach['neo']['name']:
-            self.assertIsInstance(approach['neo']['name'], str)
-        self.assertIsInstance(approach['neo']['diameter_km'], float)
-        self.assertIsInstance(approach['neo']['potentially_hazardous'], bool)
+        self.assertIsInstance(approach["neo"]["designation"], str)
+        self.assertNotEqual(approach["neo"]["name"], "None")
+        if approach["neo"]["name"]:
+            self.assertIsInstance(approach["neo"]["name"], str)
+        self.assertIsInstance(approach["neo"]["diameter_km"], float)
+        self.assertIsInstance(approach["neo"]["potentially_hazardous"], bool)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
