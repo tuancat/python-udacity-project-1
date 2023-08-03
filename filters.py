@@ -28,31 +28,17 @@ class UnsupportedCriterionError(NotImplementedError):
 
 
 class AttributeFilter:
-    """A general superclass for filters on comparable attributes.
-    An `AttributeFilter` represents the search criteria pattern comparing some
-    attribute of a close approach (or its attached NEO)
-    to a reference value. It
-    essentially functions as a callable predicate for whether a `CloseApproach`
-    object satisfies the encoded criterion.
-
-    It is constructed with a comparator operator and a reference value, and
-    calling the filter (with __call__) executes `get(approach) OP value` (in
-    infix notation).
-
-    Concrete subclasses can override the `get` classmethod to provide custom
-    behavior to fetch a desired attribute from the given `CloseApproach`.
+    """_summary_ AttributeFilter
     """
+    
     def __init__(self, op, value):
         """Construct a new `AttributeFilter` from an binary
         predicate and a reference value.
 
-        The reference value will be supplied as the second (right-hand side)
-        argument to the operator function. For example, an `AttributeFilter`
-        with `op=operator.le` and `value=10` will, when called on an approach,
-        evaluate `some_attribute <= 10`.
+        Args:
+            op: A 2-argument predicate comparator (such as `operator.le`).
+            value: The reference value to compare against.
 
-        :param op: A 2-argument predicate comparator (such as `operator.le`).
-        :param value: The reference value to compare against.
         """
         self.op = op
         self.value = value
@@ -63,15 +49,13 @@ class AttributeFilter:
 
     @classmethod
     def get(cls, approach):
-        """Get an attribute of interest from a close approach.
+        """_summary_
 
-        Concrete subclasses must override this method to get an attribute of
-        interest from the supplied `CloseApproach`.
+        Args:
+            approach (_type_): _description_
 
-        :param approach: A `CloseApproach`
-        on which to evaluate this filter.
-        :return: The value of an attribute of interest,
-        comparable to `self.value` via `self.op`.
+        Raises:
+            UnsupportedCriterionError: _description_
         """
         raise UnsupportedCriterionError
 
@@ -100,12 +84,28 @@ class VelocityFilter(AttributeFilter):
 class DiameterFilter(AttributeFilter):
     @classmethod
     def get(cls, approach):
+        """_summary_
+
+        Args:
+            approach (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """        
         return approach.neo.diameter
 
 
 class HazardousFilter(AttributeFilter):
     @classmethod
     def get(cls, approach):
+        """_summary_
+
+        Args:
+            approach (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """        
         return approach.neo.hazardous
 
 
@@ -121,6 +121,25 @@ def create_filters(
     diameter_max=None,
     hazardous=None,
 ):
+    """_summary_ create_filters
+
+    Args:
+        date (_type_, optional):  A `date` on which a matching
+    `CloseApproach` occurs.. Defaults to None.
+        start_date (_type_, optional): _description_. Defaults to None.
+        end_date (_type_, optional): A `date` on or before which
+    a matching `CloseApproach` occurs.. Defaults to None.
+        distance_min (_type_, optional): _description_. Defaults to None.
+        distance_max (_type_, optional): _description_. Defaults to None.
+        velocity_min (_type_, optional): _description_. Defaults to None.
+        velocity_max (_type_, optional): _description_. Defaults to None.
+        diameter_min (_type_, optional): _description_. Defaults to None.
+        diameter_max (_type_, optional): _description_. Defaults to None.
+        hazardous (_type_, optional): _description_. Defaults to None.
+
+    Returns:
+        _type_: _description_
+    """    
     """Create a collection of filters from user-specified criteria.
 
     Each of these arguments is provided by the main

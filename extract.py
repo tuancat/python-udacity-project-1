@@ -20,6 +20,14 @@ from models import NearEarthObject, CloseApproach
 
 
 def load_neos(neo_csv_path):
+    """_summary_
+
+    Args:
+        neo_csv_path (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """    
     data = []
     with open(neo_csv_path, "r") as file:
         csvreader = csv.reader(file)
@@ -31,6 +39,14 @@ def load_neos(neo_csv_path):
 
 
 def load_approaches(cad_json_path):
+    """_summary_
+
+    Args:
+        cad_json_path (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """    
     # Extract data into Python
     data = []
     with open(cad_json_path, "r") as infile:
@@ -44,6 +60,8 @@ def load_approaches(cad_json_path):
 
 
 def main():
+    """_summary_
+    """    
     load_neos("data/neos.csv")
     # load_approaches('data/cad.json')
 
