@@ -22,31 +22,20 @@ from helpers import cd_to_datetime, datetime_to_str
 
 
 class NearEarthObject:
-    """_summary_
+    """_summary_.
 
     Returns:
-        _type_: _description_
-    """
-    """A near-Earth object (NEO).
-
-    An NEO encapsulates semantic and physical parameters about the object, such
-    as its primary designation (required, unique), IAU name (optional), diameter
-    in kilometers (optional - sometimes unknown), and whether it's marked as
-    potentially hazardous to Earth.
-
-    A `NearEarthObject` also maintains a collection of its close approaches -
-    initialized to an empty collection, but eventually populated in the
-    `NEODatabase` constructor.
+        _type_: _description_.
     """
 
     def __init__(self, pdes, name, diameter, pha):
-        """_summary_
+        """_summary_.
 
         Args:
-            pdes (_type_): _description_
-            name (_type_): _description_
-            diameter (_type_): _description_
-            pha (_type_): _description_
+            pdes (_type_): _description_.
+            name (_type_): _description_.
+            diameter (_type_): _description_.
+            pha (_type_): _description_.
         """
         """Create a new `NearEarthObject`.
 
@@ -80,19 +69,19 @@ class NearEarthObject:
 
     @property
     def fullname(self):
-        """_summary_
+        """_summary_.
 
         Returns:
-            _type_: _description_
+            _type_: _description_.
         """
         """Return a representation of the full name of this NEO."""
         return self.designation
 
     def serialize(self):
-        """_summary_
+        """_summary_.
 
         Returns:
-            _type_: _description_
+            _type_: _description_.
         """
         json = {
             "designation": self.designation,
@@ -103,10 +92,10 @@ class NearEarthObject:
         return json
 
     def __str__(self):
-        """_summary_
+        """_summary_.
 
         Returns:
-            _type_: _description_
+            _type_: _description_.
         """
         isNot = ""
         if self.hazardous:
@@ -116,10 +105,10 @@ class NearEarthObject:
         return f"NEO {self.designation} has a diameter of {self.diameter:.3f} km and {isNot} potentially hazardous."
 
     def __repr__(self):
-        """_summary_
+        """_summary_.
 
         Returns:
-            _type_: _description_
+            _type_: _description_.
         """
         """Return `repr(self)`, a computer-readable string representation of this object."""
         return (
@@ -129,33 +118,21 @@ class NearEarthObject:
 
 
 class CloseApproach:
-    """CloseApproach
+    """CloseApproach.
 
     Returns:
-        _type_: _description_
-    """
-    """A close approach to Earth by an NEO.
-
-    A `CloseApproach` encapsulates information about the NEO's close approach to
-    Earth, such as the date and time (in UTC) of closest approach, the nominal
-    approach distance in astronomical units, and the relative approach velocity
-    in kilometers per second.
-
-    A `CloseApproach` also maintains a reference to its `NearEarthObject` -
-    initially, this information (the NEO's primary designation) is saved in a
-    private attribute, but the referenced NEO is eventually replaced in the
-    `NEODatabase` constructor.
+        _type_: _description_.
     """
 
     # If you make changes, be sure to update the comments in this file.
     def __init__(self, des, cd, dist, v_rel):
-        """_summary_
+        """_summary_.
 
         Args:
-            des (_type_): _description_
-            cd (_type_): _description_
-            dist (_type_): _description_
-            v_rel (_type_): _description_
+            des (_type_): _description_.
+            cd (_type_): _description_.
+            dist (_type_): _description_.
+            v_rel (_type_): _description_.
         """
         """Create a new `CloseApproach`.
 
@@ -174,10 +151,10 @@ class CloseApproach:
 
     @property
     def time_str(self):
-        """_summary_
+        """_summary_.
 
         Returns:
-            _type_: _description_
+            _type_: _description_.
         """
         """Return a formatted representation of this `CloseApproach`'s approach time.
 
@@ -193,10 +170,10 @@ class CloseApproach:
         return datetime_to_str(self.time)
 
     def __str__(self):
-        """_summary_
+        """_summary_.
 
         Returns:
-            _type_: _description_
+            _type_: _description_.
         """
         """Return `str(self)`."""
         # The project instructions include one possibility. Peek at the __repr__
@@ -204,10 +181,10 @@ class CloseApproach:
         return f"At {self.time_str}, {self._designation}  approaches Earth at a distance of {self.distance:.2f} au and a velocity of {self.velocity:.2f} km/s."
 
     def __repr__(self):
-        """_summary_
+        """_summary_.
 
         Returns:
-            _type_: _description_
+            _type_: _description_.
         """
         """Return `repr(self)`, a computer-readable string representation of this object."""
         return (
@@ -216,15 +193,15 @@ class CloseApproach:
         )
 
     def serialize(self):
-        """_summary_
+        """_summary_.
 
         Returns:
-            _type_: _description_
+            _type_: _description_.
         """
-        """_summary_
+        """_summary_.
 
         Returns:
-            _type_: _description_
+            _type_: _description_.
         """
         json = {
             "datetime_utc": self.time_str,
@@ -237,20 +214,20 @@ class CloseApproach:
 
     @property
     def datetime_utc(self):
-        """_summary_
+        """_summary_.
 
         Returns:
-            _type_: _description_
+            _type_: _description_.
         """
         return self.time_str
 
     def default(self, o):
-        """_summary_
+        """_summary_.
 
         Args:
-            o (_type_): _description_
+            o (_type_): _description_.
 
         Returns:
-            _type_: _description_
+            _type_: _description_.
         """
         return o.__dict__
