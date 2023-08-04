@@ -1,17 +1,15 @@
-"""Extract data on near-Earth objects and close approaches
-    from CSV and JSON files.
+"""A database encapsulating collections of near-Earth objects and their close approaches.
 
-The `load_neos` function extracts NEO data from a CSV file, formatted as
-described in the project instructions, into a collection of `NearEarthObject`s.
+A `NEODatabase` holds an interconnected data set of NEOs and close approaches.
+It provides methods to fetch an NEO by primary designation or by name, as well
+as a method to query the set of close approaches that match a collection of
+user-specified criteria.
 
-The `load_approaches` function extracts close approach data from a JSON file,
-formatted as described in the project instructions, into a collection of
-`CloseApproach` objects.
-The main module calls these functions
-with the arguments provided at the command
-line, and uses the resulting collections to build an `NEODatabase`.
+Under normal circumstances, the main module creates one NEODatabase from the
+data on NEOs and close approaches extracted by `extract.load_neos` and
+`extract.load_approaches`.
 
-You'll edit this file in Task 2.
+You'll edit this file in Tasks 2 and 3.
 """
 import csv
 import json
@@ -20,13 +18,13 @@ from models import NearEarthObject, CloseApproach
 
 
 def load_neos(neo_csv_path):
-    """_summary_
+    """_summary_.
 
     Args:
-        neo_csv_path (_type_): _description_
+        neo_csv_path (_type_): _description_.
 
     Returns:
-        _type_: _description_
+        _type_: _description_.
     """
     data = []
     with open(neo_csv_path, "r") as file:
@@ -39,13 +37,13 @@ def load_neos(neo_csv_path):
 
 
 def load_approaches(cad_json_path):
-    """_summary_
+    """_summary_.
 
     Args:
-        cad_json_path (_type_): _description_
+        cad_json_path (_type_): _description_.
 
     Returns:
-        _type_: _description_
+        _type_: _description_.
     """
     # Extract data into Python
     data = []
@@ -60,10 +58,9 @@ def load_approaches(cad_json_path):
 
 
 def main():
-    """_summary_
-    """
+    """_summary_."""
     load_neos("data/neos.csv")
-    # load_approaches('data/cad.json')
+    # load_approaches('data/cad.json').
 
 
 if __name__ == "__main__":

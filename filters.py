@@ -1,23 +1,15 @@
-"""Provide filters for querying close approaches
-and limit the generated results.
+"""A database encapsulating collections of near-Earth objects and their close approaches.
 
-The `create_filters` function produces a collection of objects that is used by
-the `query` method to generate a stream of `CloseApproach` objects that match
-all of the desired criteria. The arguments to `create_filters` are provided by
-the main module and originate from the user's command-line options.
+A `NEODatabase` holds an interconnected data set of NEOs and close approaches.
+It provides methods to fetch an NEO by primary designation or by name, as well
+as a method to query the set of close approaches that match a collection of
+user-specified criteria.
 
-This function can be thought to return a collection of instances of subclasses
-of `AttributeFilter` - a 1-argument callable (on a `CloseApproach`) constructed
-from a comparator (from the `operator` module),
-a reference value, and a class
-method `get` that subclasses
-can override to fetch an attribute of interest from
-the supplied `CloseApproach`.
+Under normal circumstances, the main module creates one NEODatabase from the
+data on NEOs and close approaches extracted by `extract.load_neos` and
+`extract.load_approaches`.
 
-The `limit` function simply limits the maximum number of values produced by an
-iterator.
-
-You'll edit this file in Tasks 3a and 3c.
+You'll edit this file in Tasks 2 and 3.
 """
 import operator
 from itertools import islice
@@ -28,17 +20,14 @@ class UnsupportedCriterionError(NotImplementedError):
 
 
 class AttributeFilter:
-    """_summary_ AttributeFilter
-    """
+    """_summary_ AttributeFilter."""
 
     def __init__(self, op, value):
-        """Construct a new `AttributeFilter` from an binary
-        predicate and a reference value.
+        """_summary_.
 
         Args:
-            op: A 2-argument predicate comparator (such as `operator.le`).
-            value: The reference value to compare against.
-
+            op (_type_): _description_.
+            value (_type_): _description_.
         """
         self.op = op
         self.value = value
@@ -49,62 +38,137 @@ class AttributeFilter:
 
     @classmethod
     def get(cls, approach):
-        """_summary_
+        """_summary_.
 
         Args:
-            approach (_type_): _description_
+            approach (_type_): _description_.
 
         Raises:
-            UnsupportedCriterionError: _description_
+            UnsupportedCriterionError: _description_.
         """
         raise UnsupportedCriterionError
 
     def __repr__(self):
+        """_summary_.
+
+        Returns:
+            _type_: _description_.
+        """
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__},value={self.value})"
 
 
 class DateFilter(AttributeFilter):
+    """_summary_.
+
+    Args:
+        AttributeFilter (_type_): _description_.
+
+    Returns:
+        _type_: _description_.
+    """
+
     @classmethod
     def get(cls, approach):
+        """_summary_.
+
+        Args:
+            approach (_type_): _description_.
+
+        Returns:
+            _type_: _description_.
+        """
         return approach.time.date()
 
 
 class DistanceFilter(AttributeFilter):
+    """_summary_.
+
+    Args:
+        AttributeFilter (_type_): _description_.
+
+    Returns:
+        _type_: _description_.
+
+    """
+
     @classmethod
     def get(cls, approach):
+        """_summary_.
+
+        Args:
+            approach (_type_): _description_.
+
+        Returns:
+            _type_: _description_.
+        """
         return approach.distance
 
 
 class VelocityFilter(AttributeFilter):
+    """_summary_.
+
+    Args:
+        AttributeFilter (_type_): _description_.
+
+    Returns:
+        _type_: _description_.
+    """
+
     @classmethod
     def get(cls, approach):
+        """_summary_.
+
+        Args:
+            approach (_type_): _description_.
+
+        Returns:
+            _type_: _description_.
+        """
         return approach.velocity
 
 
 class DiameterFilter(AttributeFilter):
+    """_summary_.
+
+    Args:
+        AttributeFilter (_type_): _description_.
+
+    Returns:
+        _type_: _description_.
+    """
+
     @classmethod
     def get(cls, approach):
-        """_summary_
+        """_summary_.
 
         Args:
-            approach (_type_): _description_
+            approach (_type_): _description_.
 
         Returns:
-            _type_: _description_
+            _type_: _description_.
         """
         return approach.neo.diameter
 
 
 class HazardousFilter(AttributeFilter):
+    """_summary_.
+
+    Args:
+        AttributeFilter (_type_): _description_.
+
+    Returns:
+        _type_: _description_.
+    """
+
     @classmethod
     def get(cls, approach):
-        """_summary_
+        """_summary_.
 
         Args:
-            approach (_type_): _description_
+            approach (_type_): _description_.
 
         Returns:
-            _type_: _description_
+            _type_: _description_.
         """
         return approach.neo.hazardous
 
@@ -121,10 +185,10 @@ def create_filters(
     diameter_max=None,
     hazardous=None,
 ):
-    """_summary_ create_filters
+    """_summary_ create_filters.
 
     Args:
-        date (_type_, optional):  A `date` on which a matching
+        date (_type_, optional):  A `date` on which a matching.
     `CloseApproach` occurs.. Defaults to None.
         start_date (_type_, optional): _description_. Defaults to None.
         end_date (_type_, optional): A `date` on or before which
@@ -225,11 +289,11 @@ def limit(iterator, n=None):
     """If `n` is 0 or None, don't limit the iterator at all.
 
     Args:
-        iterator (_type_): _description_
+        iterator (_type_): _description_.
         n (_type_, optional): _description_. Defaults to None.
 
     Returns:
-        _type_: _description_
+        _type_: _description_.
     """
     if n == 0:
         return iterator
