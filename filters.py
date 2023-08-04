@@ -30,7 +30,7 @@ class UnsupportedCriterionError(NotImplementedError):
 class AttributeFilter:
     """_summary_ AttributeFilter
     """
-    
+
     def __init__(self, op, value):
         """Construct a new `AttributeFilter` from an binary
         predicate and a reference value.
@@ -91,7 +91,7 @@ class DiameterFilter(AttributeFilter):
 
         Returns:
             _type_: _description_
-        """        
+        """
         return approach.neo.diameter
 
 
@@ -105,7 +105,7 @@ class HazardousFilter(AttributeFilter):
 
         Returns:
             _type_: _description_
-        """        
+        """
         return approach.neo.hazardous
 
 
@@ -139,7 +139,7 @@ def create_filters(
 
     Returns:
         _type_: _description_
-    """    
+    """
     """Create a collection of filters from user-specified criteria.
 
     Each of these arguments is provided by the main
@@ -230,7 +230,7 @@ def limit(iterator, n=None):
 
     Returns:
         _type_: _description_
-    """    
+    """
     if n == 0:
         return iterator
     if n is None:

@@ -20,7 +20,7 @@ class NEODatabase:
 
     Returns:
         _type_: _description_
-    """    
+    """
     """A database of near-Earth objects and their close approaches.
 
     A `NEODatabase` contains a collection of NEOs and a collection of close
@@ -36,7 +36,7 @@ class NEODatabase:
         Args:
             neos (_type_): _description_
             approaches (_type_): _description_
-        """        
+        """
         """Create a new `NEODatabase`.
 
         As a precondition,this constructor assumes the collections of NEOs
@@ -104,24 +104,24 @@ class NEODatabase:
 
     def get_neo_by_name(self, name):
         """get_neo_by_name_
-        
+
         Args:
             name (_type_): The name, as a string, of the NEO to search for
 
         Returns:
             _type_:The `NearEarthObject` with the desired name, or `None`.
-       
+
         """
         return self.neosDictByName.get(name)
 
     def query(self, filters=()):
         """query_
-        
+
         Args:
             filters (tuple, optional): _description_. A collection of filters capturing user-specified criteria.
         Returns:
             _type_: A stream of matching `CloseApproach` objects.
-        
+
         """
         if len(filters) == 0:
             return self._approaches
@@ -136,7 +136,7 @@ class NEODatabase:
 
 def main():
     """_summary_
-    """    
+    """
     neos = load_neos("data/neos.csv")
     approaches = load_approaches("data/cad.json")
     dao = NEODatabase(neos, approaches)

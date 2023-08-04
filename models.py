@@ -26,7 +26,7 @@ class NearEarthObject:
 
     Returns:
         _type_: _description_
-    """    
+    """
     """A near-Earth object (NEO).
 
     An NEO encapsulates semantic and physical parameters about the object, such
@@ -47,7 +47,7 @@ class NearEarthObject:
             name (_type_): _description_
             diameter (_type_): _description_
             pha (_type_): _description_
-        """        
+        """
         """Create a new `NearEarthObject`.
 
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
@@ -84,7 +84,7 @@ class NearEarthObject:
 
         Returns:
             _type_: _description_
-        """        
+        """
         """Return a representation of the full name of this NEO."""
         return self.designation
 
@@ -93,7 +93,7 @@ class NearEarthObject:
 
         Returns:
             _type_: _description_
-        """        
+        """
         json = {
             "designation": self.designation,
             "name": self.name,
@@ -107,7 +107,7 @@ class NearEarthObject:
 
         Returns:
             _type_: _description_
-        """        
+        """
         isNot = ""
         if self.hazardous:
             isNot = "is"
@@ -120,7 +120,7 @@ class NearEarthObject:
 
         Returns:
             _type_: _description_
-        """        
+        """
         """Return `repr(self)`, a computer-readable string representation of this object."""
         return (
             f"NearEarthObject(designation={self.designation!r}, name={self.name!r}, "
@@ -133,7 +133,7 @@ class CloseApproach:
 
     Returns:
         _type_: _description_
-    """    
+    """
     """A close approach to Earth by an NEO.
 
     A `CloseApproach` encapsulates information about the NEO's close approach to
@@ -156,7 +156,7 @@ class CloseApproach:
             cd (_type_): _description_
             dist (_type_): _description_
             v_rel (_type_): _description_
-        """        
+        """
         """Create a new `CloseApproach`.
 
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
@@ -178,7 +178,7 @@ class CloseApproach:
 
         Returns:
             _type_: _description_
-        """        
+        """
         """Return a formatted representation of this `CloseApproach`'s approach time.
 
         The value in `self.time` should be a Python `datetime` object. While a
@@ -197,7 +197,7 @@ class CloseApproach:
 
         Returns:
             _type_: _description_
-        """        
+        """
         """Return `str(self)`."""
         # The project instructions include one possibility. Peek at the __repr__
         # method for examples of advanced string formatting.
@@ -208,7 +208,7 @@ class CloseApproach:
 
         Returns:
             _type_: _description_
-        """        
+        """
         """Return `repr(self)`, a computer-readable string representation of this object."""
         return (
             f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, "
@@ -220,12 +220,12 @@ class CloseApproach:
 
         Returns:
             _type_: _description_
-        """        
+        """
         """_summary_
 
         Returns:
             _type_: _description_
-        """        
+        """
         json = {
             "datetime_utc": self.time_str,
             "distance_au": self.distance,
@@ -241,7 +241,7 @@ class CloseApproach:
 
         Returns:
             _type_: _description_
-        """        
+        """
         return self.time_str
 
     def default(self, o):
@@ -252,5 +252,5 @@ class CloseApproach:
 
         Returns:
             _type_: _description_
-        """        
+        """
         return o.__dict__
