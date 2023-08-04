@@ -18,7 +18,21 @@ from helpers import datetime_to_str
 
 
 class DataEncoder(JSONEncoder):
+    """_summary_.
+
+    Args:
+        JSONEncoder (_type_): _description_.
+    """
+
     def default(self, o):
+        """_summary_.
+
+        Args:
+            o (_type_): _description_.
+
+        Returns:
+            _type_: _description_.
+        """
         if isinstance(o, datetime):
             return datetime_to_str(o)
         else:
@@ -26,7 +40,14 @@ class DataEncoder(JSONEncoder):
 
 
 class NearEarthObjectJSON:
+    """_summary_."""
+
     def __init__(self, neo):
+        """_summary_.
+
+        Args:
+            neo (_type_): _description_.
+        """
         """Create a new `CloseApproach`.
 
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
@@ -41,11 +62,27 @@ class NearEarthObjectJSON:
         # self.neo = approach.neo
 
     def default(self, o):
+        """_summary_.
+
+        Args:
+            o (_type_): _description_.
+
+        Returns:
+            _type_: _description_.
+        """
         return o.__dict__
 
 
 class CloseApproachJSON:
+    """_summary_."""
+
     def __init__(self, approach, neoJson):
+        """_summary_.
+
+        Args:
+            approach (_type_): _description_.
+            neoJson (_type_): _description_.
+        """
         """Create a new `CloseApproach`.
 
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
@@ -59,10 +96,24 @@ class CloseApproachJSON:
         self.neo = neoJson.__dict__
 
     def default(self, o):
+        """_summary_.
+
+        Args:
+            o (_type_): _description_.
+
+        Returns:
+            _type_: _description_.
+        """
         return o.__dict__
 
 
 def write_to_csv(results, filename):
+    """_summary_.
+
+    Args:
+        results (_type_): _description_.
+        filename (_type_): _description_.
+    """
     """Write an iterable of `CloseApproach` objects to a CSV file.
 
     The precise output specification is in `README.md`. Roughly, each output row
@@ -98,13 +149,25 @@ def write_to_csv(results, filename):
 
 
 def dumper(obj):
+    """_summary_.
+
+    Args:
+        obj (_type_): _description_.
+
+    Returns:
+        _type_: _description_.
+    """
     try:
         return obj.toJSON()
-    except:
-        return obj.__dict__
 
 
 def write_to_json(results, filename):
+    """_summary_.
+
+    Args:
+        results (_type_): _description_.
+        filename (_type_): _description_.
+    """
     """Write an iterable of `CloseApproach` objects to a JSON file.
 
     The precise output specification is in `README.md`. Roughly, the output is a
@@ -112,8 +175,6 @@ def write_to_json(results, filename):
     their values and the 'neo' key mapping to a dictionary of the associated
     NEO's attributes.
 
-    :param results: An iterable of `CloseApproach` objects.
-    :param filename: A Path-like object pointing to where the data should be saved.
     """
     # Write available listings to an output file.
     first_item = True
