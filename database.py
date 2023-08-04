@@ -16,26 +16,14 @@ from filters import create_filters, AttributeFilter
 
 
 class NEODatabase:
-    """_summary_
+    """_summary_."""
 
-    Returns:
-        _type_: _description_
-    """
-    """A database of near-Earth objects and their close approaches.
-
-    A `NEODatabase` contains a collection of NEOs and a collection of close
-    approaches. It additionally maintains a few auxiliary data structures to
-    help fetch NEOs by primary designation or by name and to help speed up
-    querying for close approaches that match criteria.
-    """
-    """_summary_
-    """
     def __init__(self, neos, approaches):
-        """_summary_
+        """Highlights (blinks) a Selenium Webdriver element.
 
         Args:
-            neos (_type_): _description_
-            approaches (_type_): _description_
+            neos (_type_): _description_.
+            approaches (_type_): _description_.
         """
         """Create a new `NEODatabase`.
 
@@ -80,33 +68,21 @@ class NEODatabase:
             self.neosDictByName[str(e.name)] = e
 
     def get_neo_by_designation(self, designation):
-        """get_neo_by_designation_
+        """_summary_.
 
         Args:
-            designation (_type_): _description_
+            designation (_type_): _description_.
 
         Returns:
-            _type_: _description_
-        """        """Find and return an NEO by its primary designation.
-
-        If no match is found, return `None` instead.
-
-        Each NEO in the data set has a unique primary designation, as a string.
-
-        The matching is exact - check for spelling and capitalization if no
-        match is found.
-
-        :param designation: The primary designation of the NEO to search for.
-        :return: The `NearEarthObject` with the desired primary designation, or `None`.
+            _type_: _description_.
         """
-
         return self.neosDictByDesignation.get(designation)
 
     def get_neo_by_name(self, name):
-        """get_neo_by_name_
+        """get_neo_by_name_.
 
         Args:
-            name (_type_): The name, as a string, of the NEO to search for
+            name (_type_): The name, as a string, of the NEO to search for.
 
         Returns:
             _type_:The `NearEarthObject` with the desired name, or `None`.
@@ -115,7 +91,7 @@ class NEODatabase:
         return self.neosDictByName.get(name)
 
     def query(self, filters=()):
-        """query_
+        """query_.
 
         Args:
             filters (tuple, optional): _description_. A collection of filters capturing user-specified criteria.
@@ -129,21 +105,17 @@ class NEODatabase:
             lambda approach: all(f(approach) for f in filters),
             self._approaches,
         )
-        # for e in result:
-        #     print(e.neo.hazardous)
         return result
 
 
 def main():
-    """_summary_
-    """
+    """_summary_."""
     neos = load_neos("data/neos.csv")
     approaches = load_approaches("data/cad.json")
     dao = NEODatabase(neos, approaches)
     result = dao.query()
     print(len(dao._approaches))
     print(result)
-    # dao.query();
 
 
 if __name__ == "__main__":
