@@ -157,9 +157,7 @@ def dumper(obj):
     Returns:
         _type_: _description_.
     """
-    try:
-        return obj.toJSON()
-
+    return obj.toJSON()
 
 def write_to_json(results, filename):
     """_summary_.

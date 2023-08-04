@@ -489,8 +489,7 @@ class NEOShell(cmd.Cmd):
 
 
 def main():
-    """_summary_
-    """    """Run the main script."""
+    """Run the main script."""
     parser, inspect_parser, query_parser = make_parser()
     args = parser.parse_args()
 
